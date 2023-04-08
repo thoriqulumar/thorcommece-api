@@ -8,9 +8,9 @@ exports.up = (pgm) => {
     user_id: { type: 'varchar(255)', notNull: true, references: 'users' },
     name: { type: 'varchar(255)', notNull: true },
     email: { type: 'varchar(255)', notNull: true },
-    address: { type: 'varchar(255)', notNull: true },
+    address: { type: 'varchar(255)', notNull: false },
     img_profile: { type: 'varchar(255)', notNull: false },
-    postal_code: { type: 'varchar(50)', notNull: true },
+    postal_code: { type: 'varchar(50)', notNull: false },
     createdAt: { type: 'timestamp', notNull: true, default: pgm.func('current_timestamp') },
     updatedAt: { type: 'timestamp', notNull: true, default: pgm.func('current_timestamp') },
   });

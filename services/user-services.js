@@ -1,6 +1,7 @@
 const { nanoid } = require('nanoid');
 const { generateToken } = require('../middleware/auth');
 const User = require('../models/user');
+const Profile = require('../models/profile');
 
 const registerUser = async (req, res) => {
   try {
@@ -23,6 +24,13 @@ const registerUser = async (req, res) => {
     const user = await User.create({
       id, name, email, password, role,
     });
+
+    const profileId = nanoid(20);
+    if (role === 'user') {
+      await Profile.create({
+        id: profileId, user_id: id, name, email,
+      });
+    }
 
     if (user) {
       return res.status(201).send({ message: 'user succesfully created' });

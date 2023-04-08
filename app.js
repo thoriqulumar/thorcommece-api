@@ -8,10 +8,19 @@ app.use(express.json());
 const userRouters = require('./routes/user');
 const productRouters = require('./routes/product');
 const orderRouters = require('./routes/order');
+const profileRouters = require('./routes/profile');
+const categoryRouters = require('./routes/category');
 
+// management
 app.use('/api/v1/user', userRouters);
+
+// admin
 app.use('/api/v1/product', productRouters);
+app.use('/api/v1/category', categoryRouters);
+
+// user
 app.use('/api/v1/order', orderRouters);
+app.use('/api/v1/profile', profileRouters);
 
 const { PORT } = process.env;
 
