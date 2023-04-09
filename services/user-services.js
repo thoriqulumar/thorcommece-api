@@ -1,7 +1,8 @@
 const { nanoid } = require('nanoid');
-const { generateToken } = require('../middleware/auth');
+const { generateAccessToken, generateRefreshToken } = require('../middleware/auth');
 const User = require('../models/user');
 const Profile = require('../models/profile');
+const Refresh = require('../models/refreshToken');
 
 const registerUser = async (req, res) => {
   try {
@@ -63,8 +64,20 @@ const loginUser = async (req, res) => {
     if (!isValidPassword) {
       return res.status(401).send('Invalid email or password');
     }
-    const token = generateToken(user);
-    return res.status(200).header('auth-token', token).send({ token });
+    const token = generateAccessToken(user.id, user.role);
+    const refreshToken = generateRefreshToken(user.id, user.role);
+    const userId = user.id;
+
+    await Refresh.create({
+      user_id: userId,
+      refresh_token: refreshToken,
+    });
+
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+    return res.status(200).send({ access_token: token });
   } catch (error) {
     return res.status(500).send(error);
   }

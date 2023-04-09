@@ -5,8 +5,9 @@ const authenticateUser = (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
     const token = authHeader.split(' ')[1];
-    const decoded = jwt.verify(token, process.env.SECRET_KEY);
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY);
     req.user = decoded;
+    console.log(decoded);
     next();
   } catch (error) {
     res.status(401).send({ message: 'Unautenticate' });
@@ -24,11 +25,20 @@ const isRole = (role) => (req, res, next) => {
 const isAdmin = isRole('admin');
 const isUser = isRole('user');
 
-const generateToken = (user) => {
-  const token = jwt.sign({ id: user.id, role: user.role }, process.env.SECRET_KEY, { expiresIn: '1h' });
+const generateAccessToken = (id, role) => {
+  const token = jwt.sign({ id, role }, process.env.ACCESS_TOKEN_SECRET_KEY, { expiresIn: '1m' });
+  return token;
+};
+
+const generateRefreshToken = (id, role) => {
+  const token = jwt.sign({ id, role }, process.env.REFRESH_TOKEN_SECRET_KEY, { expiresIn: '1d' });
   return token;
 };
 
 module.exports = {
-  authenticateUser, isAdmin, isUser, generateToken,
+  authenticateUser,
+  isAdmin,
+  isUser,
+  generateAccessToken,
+  generateRefreshToken,
 };
