@@ -3,6 +3,7 @@ const { generateAccessToken, generateRefreshToken } = require('../middleware/aut
 const User = require('../models/user');
 const Profile = require('../models/profile');
 const Refresh = require('../models/refreshToken');
+const Token = require('../models/accessToken');
 
 const registerUser = async (req, res) => {
   try {
@@ -68,9 +69,24 @@ const loginUser = async (req, res) => {
     const refreshToken = generateRefreshToken(user.id, user.role);
     const userId = user.id;
 
+    const accessTokenDate = new Date();
+    accessTokenDate.setHours(accessTokenDate.getHours() + 1);
+    const expiredAccessToken = accessTokenDate.toISOString().slice(0, 19).replace('T', ' ');
+
+    const refreshTokenDate = new Date();
+    refreshTokenDate.setHours(refreshTokenDate.getHours() + 1);
+    const expiredRefreshToken = refreshTokenDate.toISOString().slice(0, 19).replace('T', ' ');
+
+    await Token.create({
+      user_id: userId,
+      access_token: token,
+      expired_at: expiredAccessToken,
+    });
+
     await Refresh.create({
       user_id: userId,
       refresh_token: refreshToken,
+      expired_at: expiredRefreshToken,
     });
 
     res.cookie('refreshToken', refreshToken, {
@@ -83,7 +99,38 @@ const loginUser = async (req, res) => {
   }
 };
 
-const logoutUser = async (req, res) => res.status(200).send({ message: 'you are authenticate' });
+const logoutUser = async (req, res) => {
+  try {
+    const { cookie } = req.headers;
+    const refreshToken = cookie.split('=')[1];
+
+    const authHeader = req.headers.authorization;
+    const accessToken = authHeader.split(' ')[1];
+
+    if (!accessToken) {
+      return res.status(401);
+    }
+
+    const deletedAccessToken = await Token.destroy({
+      where: {
+        token: accessToken,
+      },
+    });
+    await Refresh.destroy({
+      where: {
+        refresh_token: refreshToken,
+      },
+    });
+
+    if (deletedAccessToken) {
+      res.clearCookie('refreshToken');
+      return res.status(201).send({ message: 'logged out successfully' });
+    }
+    return res.status(401);
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+};
 
 module.exports = {
   registerUser,

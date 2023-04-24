@@ -1,13 +1,19 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
+const Token = require('../models/accessToken');
 
-const authenticateUser = (req, res, next) => {
+const authenticateUser = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
     const token = authHeader.split(' ')[1];
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY);
+
+    const existedToken = await Token.findOne({ where: { token } });
+    if (!existedToken) {
+      res.status(401).send({ message: 'Unauthorized' });
+    }
+
     req.user = decoded;
-    console.log(decoded);
     next();
   } catch (error) {
     res.status(401).send({ message: 'Unautenticate' });
@@ -26,7 +32,7 @@ const isAdmin = isRole('admin');
 const isUser = isRole('user');
 
 const generateAccessToken = (id, role) => {
-  const token = jwt.sign({ id, role }, process.env.ACCESS_TOKEN_SECRET_KEY, { expiresIn: '1m' });
+  const token = jwt.sign({ id, role }, process.env.ACCESS_TOKEN_SECRET_KEY, { expiresIn: '1h' });
   return token;
 };
 

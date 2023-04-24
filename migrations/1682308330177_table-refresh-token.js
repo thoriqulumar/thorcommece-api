@@ -6,6 +6,7 @@ exports.up = (pgm) => {
   pgm.createTable('refresh_token', {
     user_id: { type: 'varchar(255)', notNull: true, references: 'users' },
     refresh_token: { type: 'varchar(255)' },
+    expired_at: { type: 'DATE' },
   });
 };
 

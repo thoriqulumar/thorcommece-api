@@ -3,17 +3,22 @@ require('dotenv').config();
 const express = require('express');
 // const morgan = require('morgan');
 const cors = require('cors');
+const cron = require('node-cron');
 
 const app = express();
 
 app.use(express.json());
 app.use(cors());
 
+// routes
 const userRouters = require('./routes/user');
 const productRouters = require('./routes/product');
 const orderRouters = require('./routes/order');
 const profileRouters = require('./routes/profile');
 const categoryRouters = require('./routes/category');
+
+// scheduler
+const { checkTokenExpired } = require('./services/scheduler-services');
 
 // management
 app.use('/api/v1/user', userRouters);
@@ -26,9 +31,14 @@ app.use('/api/v1/category', categoryRouters);
 app.use('/api/v1/order', orderRouters);
 app.use('/api/v1/profile', profileRouters);
 
+cron.schedule('0 * * * *', () => {
+  checkTokenExpired();
+});
+
 const { PORT } = process.env;
 
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`listening at port ${PORT}`);
+  cron.start();
 });

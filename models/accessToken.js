@@ -2,12 +2,12 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../helper/model');
 
-const Refresh = sequelize.define('Refresh', {
+const Token = sequelize.define('Token', {
   user_id: {
     type: DataTypes.STRING,
     primaryKey: true,
   },
-  refresh_token: {
+  token: {
     type: DataTypes.STRING,
     allowNull: false,
   },
@@ -17,7 +17,7 @@ const Refresh = sequelize.define('Refresh', {
   },
 }, {
   timestamps: false,
-  tableName: 'refresh_token',
+  tableName: 'access_token',
 });
 
-module.exports = Refresh;
+module.exports = Token;
