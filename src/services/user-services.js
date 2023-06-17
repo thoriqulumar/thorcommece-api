@@ -1,9 +1,12 @@
 const { nanoid } = require('nanoid');
-const { generateAccessToken, generateRefreshToken } = require('../middleware/auth');
+const {
+  generateAccessToken,
+  generateRefreshToken,
+} = require('../middleware/auth');
 const User = require('../models/user');
 const Profile = require('../models/profile');
 const Refresh = require('../models/refreshToken');
-const Token = require('../models/accessToken');
+const Token = require('../models/authentications');
 
 const registerUser = async (req, res) => {
   try {
@@ -24,13 +27,20 @@ const registerUser = async (req, res) => {
       return res.status(401).send({ message: 'email already been used' });
     }
     const user = await User.create({
-      id, name, email, password, role,
+      id,
+      name,
+      email,
+      password,
+      role,
     });
 
     const profileId = nanoid(20);
     if (role === 'user') {
       await Profile.create({
-        id: profileId, user_id: id, name, email,
+        id: profileId,
+        user_id: id,
+        name,
+        email,
       });
     }
 
@@ -45,9 +55,7 @@ const registerUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
   try {
-    const {
-      email, password,
-    } = req.body;
+    const { email, password } = req.body;
 
     // check input
     if (!email || !password) {
@@ -71,11 +79,17 @@ const loginUser = async (req, res) => {
 
     const accessTokenDate = new Date();
     accessTokenDate.setHours(accessTokenDate.getHours() + 1);
-    const expiredAccessToken = accessTokenDate.toISOString().slice(0, 19).replace('T', ' ');
+    const expiredAccessToken = accessTokenDate
+      .toISOString()
+      .slice(0, 19)
+      .replace('T', ' ');
 
     const refreshTokenDate = new Date();
     refreshTokenDate.setHours(refreshTokenDate.getHours() + 1);
-    const expiredRefreshToken = refreshTokenDate.toISOString().slice(0, 19).replace('T', ' ');
+    const expiredRefreshToken = refreshTokenDate
+      .toISOString()
+      .slice(0, 19)
+      .replace('T', ' ');
 
     await Token.create({
       user_id: userId,

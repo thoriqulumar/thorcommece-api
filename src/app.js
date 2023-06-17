@@ -13,7 +13,6 @@ app.use(cors());
 // routes
 const userRouters = require('./routes/user');
 const productRouters = require('./routes/product');
-const orderRouters = require('./routes/order');
 const profileRouters = require('./routes/profile');
 const categoryRouters = require('./routes/category');
 
@@ -28,8 +27,11 @@ app.use('/api/v1/product', productRouters);
 app.use('/api/v1/category', categoryRouters);
 
 // user
-app.use('/api/v1/order', orderRouters);
 app.use('/api/v1/profile', profileRouters);
+
+app.get('/', (req, res) => {
+  res.status(200).send('Welcome to thorcommerce');
+});
 
 cron.schedule('0 * * * *', () => {
   checkTokenExpired();
@@ -40,5 +42,6 @@ const { PORT } = process.env;
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`listening at port ${PORT}`);
-  cron.start();
 });
+
+module.exports = app;

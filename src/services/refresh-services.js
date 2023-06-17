@@ -1,7 +1,7 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const Refresh = require('../models/refreshToken');
-const Token = require('../models/accessToken');
+const Token = require('../models/authentications');
 const User = require('../models/user');
 const { generateAccessToken } = require('../middleware/auth');
 

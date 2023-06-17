@@ -1,6 +1,6 @@
 const { Sequelize } = require('sequelize');
 const Refresh = require('../models/refreshToken');
-const Token = require('../models/accessToken');
+const Token = require('../models/authentications');
 
 const deleteToken = (token) => {
   token.destroy();

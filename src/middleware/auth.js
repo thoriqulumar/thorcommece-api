@@ -1,6 +1,6 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
-const Token = require('../models/accessToken');
+const Token = require('../models/authentications');
 
 const authenticateUser = async (req, res, next) => {
   try {
@@ -32,12 +32,16 @@ const isAdmin = isRole('admin');
 const isUser = isRole('user');
 
 const generateAccessToken = (id, role) => {
-  const token = jwt.sign({ id, role }, process.env.ACCESS_TOKEN_SECRET_KEY, { expiresIn: '1h' });
+  const token = jwt.sign({ id, role }, process.env.ACCESS_TOKEN_SECRET_KEY, {
+    expiresIn: '1h',
+  });
   return token;
 };
 
 const generateRefreshToken = (id, role) => {
-  const token = jwt.sign({ id, role }, process.env.REFRESH_TOKEN_SECRET_KEY, { expiresIn: '1d' });
+  const token = jwt.sign({ id, role }, process.env.REFRESH_TOKEN_SECRET_KEY, {
+    expiresIn: '1d',
+  });
   return token;
 };
 

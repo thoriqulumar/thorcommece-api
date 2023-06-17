@@ -2,9 +2,7 @@ const Category = require('../models/category');
 
 const addCategory = async (req, res) => {
   try {
-    const {
-      name,
-    } = req.body;
+    const { name } = req.body;
     // check input
     if (!name) {
       return res.status(401).send({ message: 'missing required fields' });
@@ -38,22 +36,23 @@ const getCategory = async (req, res) => {
 
 const updateCategory = async (req, res) => {
   try {
-    const {
-      id, name,
-    } = req.body;
+    const { id, name } = req.body;
 
     // check input
     if (!id) {
       return res.status(401).send({ message: 'missing required fields' });
     }
 
-    const category = await Category.update({
-      name,
-    }, {
-      where: {
-        id,
+    const category = await Category.update(
+      {
+        name,
       },
-    });
+      {
+        where: {
+          id,
+        },
+      },
+    );
 
     if (category) {
       return res.status(201).send({ message: 'category succesfully updated' });
@@ -66,9 +65,7 @@ const updateCategory = async (req, res) => {
 
 const deleteCategory = async (req, res) => {
   try {
-    const {
-      id,
-    } = req.body;
+    const { id } = req.body;
 
     // check input
     if (!id) {

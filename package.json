@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha  --config /__test__/test.js",
+    "test": "mocha",
     "migrate": "node-pg-migrate",
-    "start": "nodemon app.js"
+    "start": "nodemon ./src/app.js"
   },
   "author": "",
   "license": "ISC",
