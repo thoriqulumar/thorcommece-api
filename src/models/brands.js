@@ -2,7 +2,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../helper/db');
 
-const Category = sequelize.define(
+const Brands = sequelize.define(
   'Category',
   {
     id: {
@@ -10,15 +10,15 @@ const Category = sequelize.define(
       autoIncrement: true,
       primaryKey: true,
     },
-    category: {
+    brand: {
       type: DataTypes.STRING,
       allowNull: false,
     },
   },
   {
     timestamps: false,
-    tableName: 'category',
+    tableName: 'brands',
   },
 );
 
-module.exports = Category;
+module.exports = Brands;

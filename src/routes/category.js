@@ -10,7 +10,7 @@ const {
 } = require('../services/category-services');
 
 router.post('/', authenticateUser, isAdmin, addCategory);
-router.get('/', authenticateUser, getCategory);
+router.get('/', getCategory);
 router.put('/', authenticateUser, isAdmin, updateCategory);
 router.delete('/', authenticateUser, isAdmin, deleteCategory);
 

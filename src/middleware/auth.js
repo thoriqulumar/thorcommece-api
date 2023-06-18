@@ -1,17 +1,13 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
-const Token = require('../models/authentications');
 
 const authenticateUser = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
-    const token = authHeader.split(' ')[1];
-    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY);
 
-    const existedToken = await Token.findOne({ where: { token } });
-    if (!existedToken) {
-      res.status(401).send({ message: 'Unauthorized' });
-    }
+    const token = authHeader.split(' ')[1];
+
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY);
 
     req.user = decoded;
     next();
@@ -45,10 +41,16 @@ const generateRefreshToken = (id, role) => {
   return token;
 };
 
+const verifyRefreshToken = (refreshToken) => {
+  const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET_KEY);
+  return decoded;
+};
+
 module.exports = {
   authenticateUser,
   isAdmin,
   isUser,
   generateAccessToken,
   generateRefreshToken,
+  verifyRefreshToken,
 };

@@ -1,6 +1,6 @@
-const Category = require('../models/category');
+const Brands = require('../models/brands');
 
-const addCategory = async (req, res) => {
+const addBrand = async (req, res) => {
   try {
     const { name } = req.body;
     // check input
@@ -8,38 +8,38 @@ const addCategory = async (req, res) => {
       return res.status(401).send({ status: 'failed', message: 'missing required fields' });
     }
 
-    const category = await Category.create({
-      category: name,
+    const brand = await Brands.create({
+      brand: name,
     });
 
-    return res.status(201).send({ status: 'success', data: category });
+    return res.status(201).send({ status: 'success', data: brand });
   } catch (error) {
     return res.status(500).send(error);
   }
 };
 
-const getCategory = async (req, res) => {
+const getBrands = async (req, res) => {
   try {
-    const categories = await Category.findAll();
+    const brands = await Brands.findAll();
 
-    return res.status(201).send({ status: 'success', data: categories });
+    return res.status(200).send({ status: 'success', data: brands });
   } catch (error) {
     return res.status(500).send(error);
   }
 };
 
-const updateCategory = async (req, res) => {
+const updateBrand = async (req, res) => {
   try {
     const { id, name } = req.body;
 
     // check input
-    if (!id) {
+    if (!id || !name) {
       return res.status(401).send({ status: 'failed', message: 'missing required fields' });
     }
 
-    await Category.update(
+    await Brands.update(
       {
-        name,
+        brand: name,
       },
       {
         where: {
@@ -48,13 +48,13 @@ const updateCategory = async (req, res) => {
       },
     );
 
-    return res.status(201).send({ status: 'success', message: 'category succesfully updated' });
+    return res.status(201).send({ status: 'success', message: 'brand succesfully updated' });
   } catch (error) {
     return res.status(500).send(error);
   }
 };
 
-const deleteCategory = async (req, res) => {
+const deleteBrand = async (req, res) => {
   try {
     const { id } = req.body;
 
@@ -63,21 +63,21 @@ const deleteCategory = async (req, res) => {
       return res.status(401).send({ status: 'failed', message: 'missing required fields' });
     }
 
-    await Category.destroy({
+    await Brands.destroy({
       where: {
         id,
       },
     });
 
-    return res.status(201).send({ status: 'success', message: 'category succesfully deleted' });
+    return res.status(201).send({ status: 'success', message: 'brand succesfully deleted' });
   } catch (error) {
     return res.status(500).send(error);
   }
 };
 
 module.exports = {
-  addCategory,
-  getCategory,
-  updateCategory,
-  deleteCategory,
+  addBrand,
+  getBrands,
+  updateBrand,
+  deleteBrand,
 };

@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 const bcrypt = require('bcrypt');
 const { DataTypes } = require('sequelize');
-const sequelize = require('../helper/model');
+const sequelize = require('../helper/db');
 
 const User = sequelize.define(
   'User',
@@ -10,7 +10,7 @@ const User = sequelize.define(
       type: DataTypes.STRING,
       primaryKey: true,
     },
-    name: {
+    username: {
       type: DataTypes.STRING,
       allowNull: false,
     },

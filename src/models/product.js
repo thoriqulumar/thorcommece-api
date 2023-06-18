@@ -1,24 +1,32 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../helper/model');
+const sequelize = require('../helper/db');
 
 const Product = sequelize.define('Product', {
   id: {
     type: DataTypes.STRING,
     primaryKey: true,
   },
-  title: {
+  product_name: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   description: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   price: {
     type: DataTypes.INTEGER,
+    allowNull: true,
+  },
+  quantity: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+  },
+  category_id: {
+    type: DataTypes.INTEGER,
     allowNull: false,
   },
-  stock: {
+  brand_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },

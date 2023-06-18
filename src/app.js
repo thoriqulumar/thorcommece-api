@@ -3,7 +3,6 @@ require('dotenv').config();
 const express = require('express');
 // const morgan = require('morgan');
 const cors = require('cors');
-const cron = require('node-cron');
 
 const app = express();
 
@@ -12,29 +11,22 @@ app.use(cors());
 
 // routes
 const userRouters = require('./routes/user');
+const authenticationRouters = require('./routes/authentications');
 const productRouters = require('./routes/product');
 const profileRouters = require('./routes/profile');
 const categoryRouters = require('./routes/category');
+const brandsRouters = require('./routes/brands');
 
-// scheduler
-const { checkTokenExpired } = require('./services/scheduler-services');
-
-// management
+// endpoint
 app.use('/api/v1/user', userRouters);
-
-// admin
 app.use('/api/v1/product', productRouters);
 app.use('/api/v1/category', categoryRouters);
-
-// user
+app.use('/api/v1/brands', brandsRouters);
 app.use('/api/v1/profile', profileRouters);
+app.use('/api/v1/authentications', authenticationRouters);
 
 app.get('/', (req, res) => {
   res.status(200).send('Welcome to thorcommerce');
-});
-
-cron.schedule('0 * * * *', () => {
-  checkTokenExpired();
 });
 
 const { PORT } = process.env;

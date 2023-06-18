@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 const { DataTypes } = require('sequelize');
-const sequelize = require('../helper/model');
+const sequelize = require('../helper/db');
 
 const Profile = sequelize.define(
   'Profile',
@@ -13,13 +13,17 @@ const Profile = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    name: {
+    first_name: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
+    },
+    last_name: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     address: {
       type: DataTypes.STRING,

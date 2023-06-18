@@ -1,6 +1,6 @@
 exports.up = (pgm) => {
   pgm.createTable('category', {
-    id: { type: 'integer', primaryKey: true },
+    id: { type: 'serial', primaryKey: true },
     category: { type: 'varchar(50)' },
   });
 };
