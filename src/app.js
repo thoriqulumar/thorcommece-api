@@ -1,13 +1,16 @@
 /* eslint-disable import/no-extraneous-dependencies */
 require('dotenv').config();
 const express = require('express');
-// const morgan = require('morgan');
+const path = require('path');
+const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const app = express();
 
+app.use(bodyParser.json());
 app.use(express.json());
 app.use(cors());
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // routes
 const userRouters = require('./routes/user');

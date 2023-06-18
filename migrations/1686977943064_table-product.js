@@ -1,10 +1,11 @@
 exports.up = (pgm) => {
   pgm.createTable('products', {
     id: { type: 'varchar(255)', primaryKey: true },
-    product_name: { type: 'varchar(50)', notNull: true },
-    description: { type: 'varchar(255)', notNull: true },
-    price: { type: 'integer', notNull: true },
-    quantity: { type: 'integer', notNull: true },
+    product_name: { type: 'varchar(50)', notNull: false },
+    description: { type: 'varchar(255)', notNull: false },
+    img_product: { type: 'TEXT', notNull: false },
+    price: { type: 'integer', notNull: false },
+    quantity: { type: 'integer', notNull: false },
     category_id: { type: 'integer', notNull: true },
     brand_id: { type: 'integer', notNull: true },
     createdAt: {
