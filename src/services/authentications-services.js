@@ -39,7 +39,9 @@ const loginUser = async (req, res) => {
       },
     });
   } catch (error) {
-    return res.status(500).send('Internal Server Error');
+    return res.status(500).send({
+      message: 'internal server problem',
+    });
   }
 };
 
@@ -64,7 +66,9 @@ const logoutUser = async (req, res) => {
       message: 'logged out successfully',
     });
   } catch (error) {
-    return res.status(500).send('Internal Server Error');
+    return res.status(500).send({
+      message: 'internal server problem',
+    });
   }
 };
 
@@ -90,7 +94,9 @@ const refreshAuthentication = async (req, res) => {
       },
     });
   } catch (error) {
-    return res.status(500).send('Internal Server Error');
+    return res.status(500).send({
+      message: 'internal server problem',
+    });
   }
 };
 

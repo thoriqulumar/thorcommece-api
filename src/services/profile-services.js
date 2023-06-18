@@ -11,7 +11,9 @@ const getProfile = async (req, res) => {
     }
     return res.status(200).send({ status: 'success', data: checkProfile });
   } catch (error) {
-    return res.status(500).send(error);
+    return res.status(500).send({
+      message: 'internal server problem',
+    });
   }
 };
 
@@ -43,7 +45,9 @@ const updateProfile = async (req, res) => {
 
     return res.status(201).send({ status: 'success', message: 'profile user succesfully updated' });
   } catch (error) {
-    return res.status(500).send(error);
+    return res.status(500).send({
+      message: 'internal server problem',
+    });
   }
 };
 
@@ -63,7 +67,9 @@ const uploadProfileImage = async (req, res) => {
     });
     return res.status(201).send({ status: 'success', message: 'image profile user succesfully uploaded' });
   } catch (error) {
-    return res.status(500).send(error);
+    return res.status(500).send({
+      message: 'internal server problem',
+    });
   }
 };
 

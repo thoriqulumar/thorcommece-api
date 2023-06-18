@@ -14,7 +14,9 @@ const addCategory = async (req, res) => {
 
     return res.status(201).send({ status: 'success', data: category });
   } catch (error) {
-    return res.status(500).send(error);
+    return res.status(500).send({
+      message: 'internal server problem',
+    });
   }
 };
 
@@ -28,7 +30,9 @@ const getCategory = async (req, res) => {
 
     return res.status(201).send({ status: 'success', data: categories });
   } catch (error) {
-    return res.status(500).send(error);
+    return res.status(500).send({
+      message: 'internal server problem',
+    });
   }
 };
 
@@ -54,7 +58,9 @@ const updateCategory = async (req, res) => {
 
     return res.status(201).send({ status: 'success', message: 'category succesfully updated' });
   } catch (error) {
-    return res.status(500).send(error);
+    return res.status(500).send({
+      message: 'internal server problem',
+    });
   }
 };
 
@@ -75,7 +81,9 @@ const deleteCategory = async (req, res) => {
 
     return res.status(201).send({ status: 'success', message: 'category succesfully deleted' });
   } catch (error) {
-    return res.status(500).send(error);
+    return res.status(500).send({
+      message: 'internal server problem',
+    });
   }
 };
 

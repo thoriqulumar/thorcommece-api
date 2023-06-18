@@ -1,105 +1,148 @@
 const { nanoid } = require('nanoid');
+const multer = require('multer');
 const Product = require('../models/product');
 
 const addProduct = async (req, res) => {
   try {
     const {
-      title, description, price, stock,
+      productName, description, price, quantity, categoryId, brandId,
     } = req.body;
 
-    const id = nanoid(20);
+    const id = `product-${nanoid()}`;
     // check input
-    if (!title || !description || !price || !stock) {
-      return res.status(401).send({ message: 'missing required fields' });
+    if (!productName || !categoryId || !brandId) {
+      return res.status(401).send({ status: 'failed', message: 'missing required fields' });
     }
 
     const product = await Product.create({
       id,
-      title,
+      product_name: productName,
       description,
       price,
-      stock,
+      quantity,
+      category_id: categoryId,
+      brand_id: brandId,
     });
 
-    if (product) {
-      return res.status(201).send({ message: 'product succesfully created' });
-    }
-    return res.status(500).send({ message: 'failed to create product' });
+    return res.status(201).send({ status: 'success', message: 'product succesfully created', data: product });
   } catch (error) {
-    return res.status(500).send(error);
+    return res.status(500).send({
+      message: 'internal server problem',
+    });
   }
 };
 
-const getProduct = async (req, res) => {
+const getAllProduct = async (req, res) => {
   try {
     const products = await Product.findAll();
 
-    if (products) {
-      return res.status(201).send({ data: products });
-    }
-    return res.status(500).send({ message: 'failed to get products' });
+    return res.status(200).send({ status: 'success', data: products });
   } catch (error) {
-    return res.status(500).send(error);
+    return res.status(500).send({
+      message: 'internal server problem',
+    });
+  }
+};
+
+const getProductById = async (req, res) => {
+  try {
+    const { productId } = req.params;
+    const product = await Product.findOne({ where: { id: productId } });
+
+    return res.status(200).send({ status: 'success', data: product });
+  } catch (error) {
+    return res.status(500).send({
+      message: 'internal server problem',
+    });
   }
 };
 
 const updateProduct = async (req, res) => {
   try {
+    const { productId } = req.params;
     const {
-      id, title, description, price, stock,
+      productName, description, price, quantity, categoryId, brandId,
     } = req.body;
 
     // check input
-    if (!id || !title || !description || !price || !stock) {
-      return res.status(401).send({ message: 'missing required fields' });
+    if (!productName || !categoryId || !brandId) {
+      return res.status(401).send({ status: 'failed', message: 'missing required fields' });
     }
 
-    const product = await Product.update({
-      title, description, price, stock,
+    await Product.update({
+      product_name: productName,
+      description,
+      price,
+      quantity,
+      category_id: categoryId,
+      brand_id: brandId,
     }, {
       where: {
-        id,
+        id: productId,
       },
     });
 
-    if (product) {
-      return res.status(201).send({ message: 'product succesfully updated' });
-    }
-    return res.status(500).send({ message: 'failed to update product' });
+    return res.status(201).send({ status: 'success', message: 'product succesfully updated' });
   } catch (error) {
-    return res.status(500).send(error);
+    return res.status(500).send({
+      message: 'internal server problem',
+    });
   }
 };
 
 const deleteProduct = async (req, res) => {
   try {
-    const {
-      id,
-    } = req.body;
+    const { productId } = req.params;
 
-    // check input
-    if (!id) {
-      return res.status(401).send({ message: 'missing required fields' });
-    }
-
-    const product = await Product.destroy({
+    await Product.destroy({
       where: {
-        id,
+        id: productId,
       },
     });
 
-    if (product) {
-      return res.status(201).send({ message: 'product succesfully deleted' });
-    }
-    return res.status(500).send({ message: 'failed to delete product' });
+    return res.status(200).send({ status: 'success', message: 'product succesfully deleted' });
   } catch (error) {
-    return res.status(500).send(error);
+    return res.status(500).send({
+      message: 'internal server problem',
+    });
+  }
+};
+
+const uploadProductImage = async (req, res) => {
+  try {
+    const { productId } = req.params;
+
+    const localPath = req.file.path;
+    const path = localPath.split('\\');
+
+    const imagePath = `/uploads/products/${path[2]}`;
+
+    await Product.update({
+      img_product: imagePath,
+    }, {
+      where: {
+        id: productId,
+      },
+    });
+    return res.status(201).send({ status: 'success', message: 'image product succesfully uploaded' });
+  } catch (error) {
+    if (error instanceof multer.MulterError) {
+      return res.status(401).send({
+        message: 'Only image files are allowed!',
+      });
+    }
+    // Custom errors or other internal server errors
+    return res.status(500).send({
+      message: 'Internal server problem',
+    });
   }
 };
 
 module.exports = {
   addProduct,
-  getProduct,
+  getAllProduct,
+  getProductById,
   updateProduct,
   deleteProduct,
+  uploadProductImage,
 };

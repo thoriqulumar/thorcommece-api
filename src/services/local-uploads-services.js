@@ -8,12 +8,19 @@ const localUploadSerivce = (dirPath) => {
       cb(null, `uploads/${dirPath}`);
     },
     filename: (req, file, cb) => {
-      const ext = path.extname(file.originalname);
-      const fileName = `profile-${Date.now()}${ext}`;
-      cb(null, fileName);
+      if (file.mimetype.startsWith('image/')) {
+        const ext = path.extname(file.originalname);
+        const fileName = `${dirPath}-${Date.now()}${ext}`;
+        cb(null, fileName);
+      } else {
+        cb(new multer.MulterError('Only image files are allowed!'), false);
+      }
     },
   });
-  return multer({ storage });
+  return multer({
+    storage,
+
+  });
 };
 
 module.exports = localUploadSerivce;

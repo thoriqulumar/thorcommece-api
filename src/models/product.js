@@ -10,6 +10,10 @@ const Product = sequelize.define('Product', {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  img_product: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+  },
   description: {
     type: DataTypes.STRING,
     allowNull: true,
@@ -31,7 +35,7 @@ const Product = sequelize.define('Product', {
     allowNull: false,
   },
 }, {
-  tableName: 'product',
+  tableName: 'products',
 });
 
 module.exports = Product;

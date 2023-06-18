@@ -14,7 +14,9 @@ const addBrand = async (req, res) => {
 
     return res.status(201).send({ status: 'success', data: brand });
   } catch (error) {
-    return res.status(500).send(error);
+    return res.status(500).send({
+      message: 'internal server problem',
+    });
   }
 };
 
@@ -28,7 +30,9 @@ const getBrands = async (req, res) => {
 
     return res.status(200).send({ status: 'success', data: brands });
   } catch (error) {
-    return res.status(500).send(error);
+    return res.status(500).send({
+      message: 'internal server problem',
+    });
   }
 };
 
@@ -54,7 +58,9 @@ const updateBrand = async (req, res) => {
 
     return res.status(201).send({ status: 'success', message: 'brand succesfully updated' });
   } catch (error) {
-    return res.status(500).send(error);
+    return res.status(500).send({
+      message: 'internal server problem',
+    });
   }
 };
 
@@ -75,7 +81,9 @@ const deleteBrand = async (req, res) => {
 
     return res.status(201).send({ status: 'success', message: 'brand succesfully deleted' });
   } catch (error) {
-    return res.status(500).send(error);
+    return res.status(500).send({
+      message: 'internal server problem',
+    });
   }
 };
 
