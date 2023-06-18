@@ -20,7 +20,11 @@ const addCategory = async (req, res) => {
 
 const getCategory = async (req, res) => {
   try {
-    const categories = await Category.findAll();
+    const categories = await Category.findAll({
+      order: [
+        ['id', 'ASC'],
+      ],
+    });
 
     return res.status(201).send({ status: 'success', data: categories });
   } catch (error) {
@@ -39,7 +43,7 @@ const updateCategory = async (req, res) => {
 
     await Category.update(
       {
-        name,
+        category: name,
       },
       {
         where: {

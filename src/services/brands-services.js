@@ -20,7 +20,11 @@ const addBrand = async (req, res) => {
 
 const getBrands = async (req, res) => {
   try {
-    const brands = await Brands.findAll();
+    const brands = await Brands.findAll({
+      order: [
+        ['id', 'ASC'],
+      ],
+    });
 
     return res.status(200).send({ status: 'success', data: brands });
   } catch (error) {
