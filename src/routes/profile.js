@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 const express = require('express');
-const localUploadSerivce = require('../services/local-uploads-services');
+const { localUploadSerivce } = require('../services/local-uploads-services');
 const { authenticateUser, isUser } = require('../middleware/auth');
 
 const router = express.Router();

@@ -4,6 +4,7 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const { uploadErrorHandler } = require('./services/local-uploads-services');
 
 const app = express();
 
@@ -11,6 +12,7 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.use(cors());
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+app.use(uploadErrorHandler);
 
 // routes
 const userRouters = require('./routes/user');

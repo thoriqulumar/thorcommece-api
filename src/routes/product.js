@@ -1,6 +1,6 @@
 const express = require('express');
 const { authenticateUser, isAdmin } = require('../middleware/auth');
-const localUploadSerivce = require('../services/local-uploads-services');
+const { localUploadSerivce } = require('../services/local-uploads-services');
 
 const router = express.Router();
 const {

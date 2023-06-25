@@ -126,7 +126,7 @@ const uploadProductImage = async (req, res) => {
     });
     return res.status(201).send({ status: 'success', message: 'image product succesfully uploaded' });
   } catch (error) {
-    if (error instanceof multer.MulterError) {
+    if (error instanceof Error) {
       return res.status(401).send({
         message: 'Only image files are allowed!',
       });

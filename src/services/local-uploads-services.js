@@ -13,14 +13,22 @@ const localUploadSerivce = (dirPath) => {
         const fileName = `${dirPath}-${Date.now()}${ext}`;
         cb(null, fileName);
       } else {
-        cb(new multer.MulterError('Only image files are allowed!'), false);
+        cb(new Error('Only image files are allowed!'), false);
       }
     },
   });
   return multer({
     storage,
-
   });
 };
 
-module.exports = localUploadSerivce;
+const uploadErrorHandler = (err, req, res, next) => {
+  if (err instanceof multer.MulterError) {
+    res.status(401).send({
+      status: 'failed',
+      message: err.message,
+    });
+  }
+};
+
+module.exports = { localUploadSerivce, uploadErrorHandler };
