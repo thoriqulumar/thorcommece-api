@@ -5,7 +5,15 @@ const addBrand = async (req, res) => {
     const { name } = req.body;
     // check input
     if (!name) {
-      return res.status(401).send({ status: 'failed', message: 'missing required fields' });
+      return res
+        .status(401)
+        .send({ status: 'failed', message: 'missing required fields' });
+    }
+
+    const existingBrand = await Brands.findOne({ where: { brand: name } });
+
+    if (existingBrand){
+      return res.status(401).send({ status: 'failed', message: 'brand already exists' });
     }
 
     const brand = await Brands.create({
@@ -23,9 +31,7 @@ const addBrand = async (req, res) => {
 const getBrands = async (req, res) => {
   try {
     const brands = await Brands.findAll({
-      order: [
-        ['id', 'ASC'],
-      ],
+      order: [['id', 'ASC']],
     });
 
     return res.status(200).send({ status: 'success', data: brands });
@@ -42,7 +48,9 @@ const updateBrand = async (req, res) => {
 
     // check input
     if (!id || !name) {
-      return res.status(401).send({ status: 'failed', message: 'missing required fields' });
+      return res
+        .status(401)
+        .send({ status: 'failed', message: 'missing required fields' });
     }
 
     await Brands.update(
@@ -53,10 +61,12 @@ const updateBrand = async (req, res) => {
         where: {
           id,
         },
-      },
+      }
     );
 
-    return res.status(201).send({ status: 'success', message: 'brand succesfully updated' });
+    return res
+      .status(201)
+      .send({ status: 'success', message: 'brand succesfully updated' });
   } catch (error) {
     return res.status(500).send({
       message: 'internal server problem',
@@ -70,7 +80,9 @@ const deleteBrand = async (req, res) => {
 
     // check input
     if (!id) {
-      return res.status(401).send({ status: 'failed', message: 'missing required fields' });
+      return res
+        .status(401)
+        .send({ status: 'failed', message: 'missing required fields' });
     }
 
     await Brands.destroy({
@@ -79,7 +91,9 @@ const deleteBrand = async (req, res) => {
       },
     });
 
-    return res.status(201).send({ status: 'success', message: 'brand succesfully deleted' });
+    return res
+      .status(201)
+      .send({ status: 'success', message: 'brand succesfully deleted' });
   } catch (error) {
     return res.status(500).send({
       message: 'internal server problem',

@@ -1,5 +1,4 @@
 const { nanoid } = require('nanoid');
-const multer = require('multer');
 const Product = require('../models/product');
 
 const addProduct = async (req, res) => {

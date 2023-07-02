@@ -21,6 +21,7 @@ const productRouters = require('./routes/product');
 const profileRouters = require('./routes/profile');
 const categoryRouters = require('./routes/category');
 const brandsRouters = require('./routes/brands');
+const cartRouters = require('./routes/cart');
 
 // endpoint
 app.use('/api/v1/user', userRouters);
@@ -29,6 +30,7 @@ app.use('/api/v1/category', categoryRouters);
 app.use('/api/v1/brands', brandsRouters);
 app.use('/api/v1/profile', profileRouters);
 app.use('/api/v1/authentications', authenticationRouters);
+app.use('/api/v1/cart', cartRouters);
 
 app.get('/', (req, res) => {
   res.status(200).send('Welcome to thorcommerce');

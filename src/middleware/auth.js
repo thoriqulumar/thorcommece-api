@@ -4,11 +4,10 @@ const jwt = require('jsonwebtoken');
 const authenticateUser = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
-
+   
     const token = authHeader.split(' ')[1];
 
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY);
-
     req.user = decoded;
     next();
   } catch (error) {
@@ -46,6 +45,17 @@ const verifyRefreshToken = (refreshToken) => {
   return decoded;
 };
 
+const getInfoUser = (authHeader) => {
+  const token = authHeader.split(' ')[1];
+
+  const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY);
+
+  return {
+    id: decoded.id,
+    role: decoded.role
+  }
+}
+
 module.exports = {
   authenticateUser,
   isAdmin,
@@ -53,4 +63,5 @@ module.exports = {
   generateAccessToken,
   generateRefreshToken,
   verifyRefreshToken,
+  getInfoUser,
 };
