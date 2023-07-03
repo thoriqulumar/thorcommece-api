@@ -6,5 +6,5 @@ exports.up = (pgm) => {
 };
 
 exports.down = (pgm) => {
-  pgm.dropTable('category');
+  pgm.dropTable('brands');
 };
