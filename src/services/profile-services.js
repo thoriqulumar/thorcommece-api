@@ -7,7 +7,7 @@ const getProfile = async (req, res) => {
     const checkProfile = await Profile.findOne({ user_id: { userId } });
 
     if (!checkProfile) {
-      return res.status(401).send({ status: 'failed', message: 'profile user not found' });
+      return res.status(400).send({ status: 'failed', message: 'profile user not found' });
     }
     return res.status(200).send({ status: 'success', data: checkProfile });
   } catch (error) {
@@ -28,7 +28,7 @@ const updateProfile = async (req, res) => {
     const checkExistingUser = await Profile.findOne({ user_id: { userId } });
 
     if (!checkExistingUser) {
-      return res.status(401).send({ status: 'failed', message: 'profile user not found' });
+      return res.status(404).send({ status: 'failed', message: 'profile user not found' });
     }
 
     await Profile.update({

@@ -14,13 +14,13 @@ const order = async (req, res) => {
 
     if (!bank) {
       return res
-        .status(401)
+        .status(400)
         .send({ status: 'failed', message: 'missing required fields' });
     }
     bank = bank.toLowerCase();
     if (!checkBank(bank)) {
       return res
-        .status(401)
+        .status(400)
         .send({ status: 'failed', message: 'bank is not available' });
     }
 

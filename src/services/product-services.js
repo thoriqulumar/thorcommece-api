@@ -10,7 +10,7 @@ const addProduct = async (req, res) => {
     const id = `product-${nanoid()}`;
     // check input
     if (!productName || !categoryId || !brandId) {
-      return res.status(401).send({ status: 'failed', message: 'missing required fields' });
+      return res.status(400).send({ status: 'failed', message: 'missing required fields' });
     }
 
     const product = await Product.create({
@@ -65,7 +65,7 @@ const updateProduct = async (req, res) => {
 
     // check input
     if (!productName || !categoryId || !brandId) {
-      return res.status(401).send({ status: 'failed', message: 'missing required fields' });
+      return res.status(400).send({ status: 'failed', message: 'missing required fields' });
     }
 
     await Product.update({
@@ -126,7 +126,7 @@ const uploadProductImage = async (req, res) => {
     return res.status(201).send({ status: 'success', message: 'image product succesfully uploaded' });
   } catch (error) {
     if (error instanceof Error) {
-      return res.status(401).send({
+      return res.status(400).send({
         message: 'Only image files are allowed!',
       });
     }

@@ -6,14 +6,14 @@ const addBrand = async (req, res) => {
     // check input
     if (!name) {
       return res
-        .status(401)
+        .status(400)
         .send({ status: 'failed', message: 'missing required fields' });
     }
 
     const existingBrand = await Brands.findOne({ where: { brand: name } });
 
     if (existingBrand){
-      return res.status(401).send({ status: 'failed', message: 'brand already exists' });
+      return res.status(400).send({ status: 'failed', message: 'brand already exists' });
     }
 
     const brand = await Brands.create({
@@ -49,7 +49,7 @@ const updateBrand = async (req, res) => {
     // check input
     if (!id || !name) {
       return res
-        .status(401)
+        .status(400)
         .send({ status: 'failed', message: 'missing required fields' });
     }
 
@@ -81,7 +81,7 @@ const deleteBrand = async (req, res) => {
     // check input
     if (!id) {
       return res
-        .status(401)
+        .status(400)
         .send({ status: 'failed', message: 'missing required fields' });
     }
 

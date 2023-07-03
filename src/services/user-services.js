@@ -5,9 +5,7 @@ const Profile = require('../models/profile');
 
 const registerUser = async (req, res) => {
   try {
-    const {
-      username, email, password, role,
-    } = req.body;
+    const { username, email, password, role } = req.body;
 
     const id = `user-${nanoid()}`;
     // check input
@@ -56,5 +54,4 @@ const registerUser = async (req, res) => {
 
 module.exports = {
   registerUser,
-
 };

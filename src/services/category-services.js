@@ -5,7 +5,7 @@ const addCategory = async (req, res) => {
     const { name } = req.body;
     // check input
     if (!name) {
-      return res.status(401).send({ status: 'failed', message: 'missing required fields' });
+      return res.status(400).send({ status: 'failed', message: 'missing required fields' });
     }
 
     const category = await Category.create({
@@ -28,7 +28,7 @@ const getCategory = async (req, res) => {
       ],
     });
 
-    return res.status(201).send({ status: 'success', data: categories });
+    return res.status(200).send({ status: 'success', data: categories });
   } catch (error) {
     return res.status(500).send({
       message: 'internal server problem',
@@ -42,7 +42,7 @@ const updateCategory = async (req, res) => {
 
     // check input
     if (!id) {
-      return res.status(401).send({ status: 'failed', message: 'missing required fields' });
+      return res.status(400).send({ status: 'failed', message: 'missing required fields' });
     }
 
     await Category.update(
@@ -70,7 +70,7 @@ const deleteCategory = async (req, res) => {
 
     // check input
     if (!id) {
-      return res.status(401).send({ status: 'failed', message: 'missing required fields' });
+      return res.status(400).send({ status: 'failed', message: 'missing required fields' });
     }
 
     await Category.destroy({
@@ -79,7 +79,7 @@ const deleteCategory = async (req, res) => {
       },
     });
 
-    return res.status(201).send({ status: 'success', message: 'category succesfully deleted' });
+    return res.status(200).send({ status: 'success', message: 'category succesfully deleted' });
   } catch (error) {
     return res.status(500).send({
       message: 'internal server problem',

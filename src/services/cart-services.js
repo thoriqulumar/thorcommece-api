@@ -13,7 +13,7 @@ const addCart = async (req, res) => {
     // check input
     if (!productId || !quantity) {
       return res
-        .status(401)
+        .status(400)
         .send({ status: 'failed', message: 'missing required fields' });
     }
 
@@ -43,7 +43,7 @@ const addCart = async (req, res) => {
 
     if (!product) {
       return res
-        .status(401)
+        .status(404)
         .send({ status: 'failed', message: 'product not exists' });
     }
 
@@ -110,7 +110,7 @@ const updateCart = async (req, res) => {
     // check input
     if (!productId || !quantity) {
       return res
-        .status(401)
+        .status(400)
         .send({ status: 'failed', message: 'missing required fields' });
     }
 
@@ -118,7 +118,7 @@ const updateCart = async (req, res) => {
 
     if (!product) {
       return res
-        .status(401)
+        .status(404)
         .send({ status: 'failed', message: 'product not exists' });
     }
 

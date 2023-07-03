@@ -12,19 +12,23 @@ const loginUser = async (req, res) => {
 
     // check input
     if (!email || !password) {
-      return res.status(401).send({ status: 'failed', message: 'missing required fields' });
+      return res
+        .status(400)
+        .send({ status: 'failed', message: 'missing required fields' });
     }
 
     // check user
     const user = await User.findOne({ where: { email } });
 
     if (!user) {
-      return res.status(404).send({ status: 'failed', message: 'user not found' });
+      return res
+        .status(404)
+        .send({ status: 'failed', message: 'user not found' });
     }
 
     const isValidPassword = await user.isValidPassword(password);
     if (!isValidPassword) {
-      return res.status(401).send('Invalid email or password');
+      return res.status(400).send('Invalid email or password');
     }
     const token = generateAccessToken(user.id, user.role);
     const refreshToken = generateRefreshToken(user.id, user.role);
@@ -53,7 +57,7 @@ const logoutUser = async (req, res) => {
     const checkExistingToken = await Token.findOne({ token: { refreshToken } });
 
     if (!checkExistingToken) {
-      return res.status(401).send('refresh token not found');
+      return res.status(404).send('refresh token not found');
     }
 
     await Token.destroy({
@@ -76,15 +80,21 @@ const logoutUser = async (req, res) => {
 const refreshAuthentication = async (req, res) => {
   try {
     const { refreshToken } = req.body;
-    const checkExistingToken = await Token.findOne({ where: { token: refreshToken } });
+    const checkExistingToken = await Token.findOne({
+      where: { token: refreshToken },
+    });
 
     if (!checkExistingToken) {
-      return res.status(401).send({ status: 'failed', message: 'refresh token not found' });
+      return res
+        .status(404)
+        .send({ status: 'failed', message: 'refresh token not found' });
     }
     const decoded = verifyRefreshToken(refreshToken);
 
     if (!decoded) {
-      return res.status(401).send({ status: 'failed', message: 'refresh token expired' });
+      return res
+        .status(401)
+        .send({ status: 'failed', message: 'refresh token expired' });
     }
 
     const token = generateAccessToken(decoded.id, decoded.role);
