@@ -98,7 +98,7 @@ const refreshAuthentication = async (req, res) => {
     }
 
     const token = generateAccessToken(decoded.id, decoded.role);
-    return res.status(200).send({
+    return res.status(201).send({
       status: 'success',
       data: {
         accessToken: token,
